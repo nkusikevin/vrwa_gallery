@@ -1,5 +1,16 @@
 import "./style.css";
-
+import Image1 from "images/1.jpg";
+import Image2 from "images/2.jpg";
+import Image3 from "images/3.jpg";
+import Image4 from "images/4.jpg";
+import Image5 from "images/5.jpg";
+import Image6 from "images/6.jpg";
+import Image7 from "images/7.jpg";
+import Image8 from "images/8.jpg";
+import Image9 from "images/9.jpg";
+import Image10 from "images/10.jpg";
+import Image11 from "images/11.jpg";
+import Image12 from "images/12.jpg";
 import { Renderer, Camera, Transform } from "ogl";
 
 export default class App {
@@ -9,7 +20,7 @@ export default class App {
 		this.createScene();
 		this.createGeometry();
 		this.onResize();
-
+		this.createMedias();
 		this.update();
 
 		this.addEventListeners();
@@ -28,6 +39,51 @@ export default class App {
 		this.camera = new Camera(this.gl);
 		this.camera.fov = 45;
 		this.camera.position.z = 20;
+	}
+
+	createMedias() {
+		this.mediasImages = [
+			{ image: Image1, text: "New Synagogue" },
+			{ image: Image2, text: "Paro Taktsang" },
+			{ image: Image3, text: "Petra" },
+			{ image: Image4, text: "Gooderham Building" },
+			{ image: Image5, text: "Catherine Palace" },
+			{ image: Image6, text: "Sheikh Zayed Mosque" },
+			{ image: Image7, text: "Madonna Corona" },
+			{ image: Image8, text: "Plaza de Espana" },
+			{ image: Image9, text: "Saint Martin" },
+			{ image: Image10, text: "Tugela Falls" },
+			{ image: Image11, text: "Sintra-Cascais" },
+			{ image: Image12, text: "The Prophet's Mosque" },
+			{ image: Image1, text: "New Synagogue" },
+			{ image: Image2, text: "Paro Taktsang" },
+			{ image: Image3, text: "Petra" },
+			{ image: Image4, text: "Gooderham Building" },
+			{ image: Image5, text: "Catherine Palace" },
+			{ image: Image6, text: "Sheikh Zayed Mosque" },
+			{ image: Image7, text: "Madonna Corona" },
+			{ image: Image8, text: "Plaza de Espana" },
+			{ image: Image9, text: "Saint Martin" },
+			{ image: Image10, text: "Tugela Falls" },
+			{ image: Image11, text: "Sintra-Cascais" },
+			{ image: Image12, text: "The Prophet's Mosque" },
+		];
+
+		this.medias = this.mediasImages.map(({ image, text }, index) => {
+			const media = new Media({
+				geometry: this.planeGeometry,
+				gl: this.gl,
+				image,
+				index,
+				length: this.mediasImages.length,
+				scene: this.scene,
+				screen: this.screen,
+				text,
+				viewport: this.viewport,
+			});
+
+			return media;
+		});
 	}
 
 	createScene() {
@@ -61,6 +117,15 @@ export default class App {
 			height: window.innerHeight,
 			width: window.innerWidth,
 		};
+		//make sure images are responsive
+		if (this.medias) {
+			this.medias.forEach((media) =>
+				media.onResize({
+					screen: this.screen,
+					viewport: this.viewport,
+				})
+			);
+		}
 
 		this.renderer.setSize(this.screen.width, this.screen.height);
 
@@ -88,6 +153,10 @@ export default class App {
 		});
 
 		window.requestAnimationFrame(this.update.bind(this));
+
+		if (this.medias) {
+			this.medias.forEach((media) => media.update(this.scroll, this.direction));
+		}
 	}
 
 	/**
