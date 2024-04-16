@@ -7,7 +7,7 @@ export default class App {
 		this.createRenderer();
 		this.createCamera();
 		this.createScene();
-
+		this.createGeometry();
 		this.onResize();
 
 		this.update();
@@ -32,6 +32,14 @@ export default class App {
 
 	createScene() {
 		this.scene = new Transform();
+	}
+
+	// Create a geometry
+	createGeometry() {
+		this.planeGeometry = new Plane(this.gl, {
+			heightSegments: 50,
+			widthSegments: 100,
+		});
 	}
 
 	/**
